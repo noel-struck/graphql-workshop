@@ -9,8 +9,52 @@ function startServer() {
     const app = express();
     const PORT = process.env.PORT;
 
+    // Dummy Data
+    const categoryData = [
+        {
+            _id: 1,
+            name: 'Men'
+        },
+        {
+            _id: 2,
+            name: 'Women'
+        },
+        {
+            _id: 3,
+            name: 'Kids'
+        }
+    ];
+
+    // Type Definitions
+    const typeDefs = gql`
+        type Category {
+            _id: ID,
+            name: String!
+        }
+
+        type Query {
+            categories: [Category]
+            category(_id: Int): Category
+        }
+    `;
+
+    // Resolvers
+    const resolvers = {
+        Query: {
+            categories: (parent, args) => {
+                return categoryData;
+            },
+            category: (parent, args) => {
+                return categoryData.find(item => item._id === args._id);
+            }
+        }
+    }
+
+    // Crear una instancia de Apollo Server
+    const server = new ApolloServer({ typeDefs, resolvers });
+    server.applyMiddleware({app});
     app.listen(PORT, () => {
-        console.log(`Server listening at port: ${PORT}`);
+        console.log(`Server listening at port: http://localhost:${PORT}${server.graphqlPath}`);
     });
 }
 
