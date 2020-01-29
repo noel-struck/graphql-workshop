@@ -36,6 +36,14 @@ function startServer() {
             categories: [Category]
             category(_id: Int): Category
         }
+
+        input CategoryInput {
+            name: String!
+        }
+
+        type Mutation {
+            createCategory(category: CategoryInput!): Category
+        }
     `;
 
     // Resolvers
@@ -46,6 +54,15 @@ function startServer() {
             },
             category: (parent, args) => {
                 return categoryData.find(item => item._id === args._id);
+            }
+        },
+        Mutation: {
+            createCategory: (parent, args) => {
+                const listOfCategoriesIds = categoryData.map(category => category._id);
+                const maxCategoryId = Math.max(...listOfCategoriesIds);
+                args.category._id = maxCategoryId + 1;
+                categoryData.push(args.category);
+                return args.category;
             }
         }
     }
