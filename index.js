@@ -8,6 +8,7 @@ require('dotenv').config()
 function startServer() {
     const app = express();
     const PORT = process.env.PORT;
+    console.log(PORT);
 
     // Dummy Data
     const categoryData = [
@@ -43,6 +44,8 @@ function startServer() {
 
         type Mutation {
             createCategory(category: CategoryInput!): Category
+            updateCategory(_id: Int!, category: CategoryInput): Category
+            deleteCategory(_id: Int!): [Category]
         }
     `;
 
@@ -63,6 +66,17 @@ function startServer() {
                 args.category._id = maxCategoryId + 1;
                 categoryData.push(args.category);
                 return args.category;
+            },
+            updateCategory: (parent, args) => {
+                const index = categoryData.find(item => item._id === args._id);
+                categoryData[index] = args.category;
+                categoryData[index]._id = args._id;
+                return categoryData[index];
+            },
+            deleteCategory: (parent, args) => {
+                const index = categoryData.findIndex(item => item._id === args._id);
+                const deleted = categoryData.splice(index, 1);
+                return categoryData;
             }
         }
     }
