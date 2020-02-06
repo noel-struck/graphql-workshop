@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { gql, ApolloServer } = require('apollo-server-express');
 const categorySchema = require('./modules/category/category.schema');
 const categoryResolver = require('./modules/category/category.resolver');
@@ -7,9 +8,11 @@ const categoryResolver = require('./modules/category/category.resolver');
 require('dotenv').config()
 
 // SERVER SETUP
-function startServer() {
+async function startServer() {
     const app = express();
     const PORT = process.env.PORT;
+
+    await mongoose.connect(process.env.DB_STRING, { useUnifiedTopology: true, useNewUrlParser: true });
 
     // Type Definitions
     const typeDefs = gql`
