@@ -8,7 +8,7 @@ const categorySchema = gql `
 
     extend type Query {
         categories: [Category]
-        category(_id: Int): Category
+        category(_id: String!): Category
     }
 
     input CategoryInput {
@@ -17,8 +17,8 @@ const categorySchema = gql `
 
     extend type Mutation {
         createCategory(category: CategoryInput!): Category
-        updateCategory(_id: Int!, category: CategoryInput): Category
-        deleteCategory(_id: Int!): [Category]
+        updateCategory(_id: String!, category: CategoryInput): Category
+        deleteCategory(_id: String!): [Category]
     }
 `;
 

@@ -12,7 +12,10 @@ async function startServer() {
     const app = express();
     const PORT = process.env.PORT;
 
-    await mongoose.connect(process.env.DB_STRING, { useUnifiedTopology: true, useNewUrlParser: true });
+    await mongoose.connect(process.env.DB_STRING, { 
+            useUnifiedTopology: true, 
+            useNewUrlParser: true,
+            useFindAndModify: false });
 
     // Type Definitions
     const typeDefs = gql`

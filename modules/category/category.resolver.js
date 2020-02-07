@@ -7,7 +7,7 @@ const categoryResolvers = {
             return await categoryModel.find();
         },
         category: async (parent, args) => {
-            return await categoryModel.findById(args.id);
+            return await categoryModel.findById(args._id);
         }
     },
     Mutation: {
@@ -15,11 +15,12 @@ const categoryResolvers = {
             const categoryInstance = new categoryModel(args.category);
             return await categoryInstance.save();
         },
-        updateCategory: (parent, args) => {
-
+        updateCategory: async (parent, args) => {
+            return await categoryModel.findByIdAndUpdate(args._id, args.category, { new: true }); 
         },
-        deleteCategory: (parent, args) => {
-
+        deleteCategory: async (parent, args) => {
+            await categoryModel.findByIdAndDelete(args._id);
+            return await categoryModel.find();
         }
     }
 };
