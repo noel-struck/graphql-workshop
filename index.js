@@ -1,8 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { gql, ApolloServer } = require('apollo-server-express');
+// CATEGORY 
 const categorySchema = require('./modules/category/category.schema');
 const categoryResolver = require('./modules/category/category.resolver');
+// PRODUCT
+const productSchema = require('./modules/product/product.schema');
+const productResolver = require('./modules/product/product.resolver');
 
 // Call environment variables
 require('dotenv').config()
@@ -25,8 +29,8 @@ async function startServer() {
 
     // Crear una instancia de Apollo Server
     const server = new ApolloServer({ 
-        typeDefs: [typeDefs, categorySchema], 
-        resolvers: [categoryResolver] 
+        typeDefs: [typeDefs, categorySchema, productSchema], 
+        resolvers: [categoryResolver, productResolver] 
     });
 
     server.applyMiddleware({app});
