@@ -1,7 +1,12 @@
 const categoryModel = require('./category.model');
-const categoryProduct = require('../product/product.model');
+const productModel = require('../product/product.model');
 
 const categoryResolvers = {
+    Category: {
+        products: (parent, args) => {
+            return productModel.find({ category: parent._id});
+        }
+    },
     Query: {
         categories: async (parent, args) => {
             return await categoryModel.find();

@@ -4,6 +4,7 @@ const categorySchema = gql `
     type Category {
         _id: ID,
         name: String!
+        products: [Product]
     }
 
     extend type Query {
